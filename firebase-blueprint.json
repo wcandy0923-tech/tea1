@@ -1,0 +1,78 @@
+{
+  "entities": {
+    "Category": {
+      "title": "Category",
+      "description": "Product categories like 'Black Tea', 'Milk Tea', etc.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["name", "order"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "A tea drink on the menu.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "description": { "type": "string" },
+        "categoryId": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "options": {
+          "type": "object",
+          "properties": {
+            "sugarLevels": { "type": "array", "items": { "type": "string" } },
+            "iceLevels": { "type": "array", "items": { "type": "string" } },
+            "toppings": { "type": "array", "items": { "type": "object" } }
+          }
+        }
+      },
+      "required": ["name", "price", "categoryId"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer's tea order.",
+      "type": "object",
+      "properties": {
+        "customerName": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": { "type": "object" }
+        },
+        "totalPrice": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "preparing", "completed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["items", "totalPrice", "status", "createdAt"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Users with administrative privileges.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" }
+      },
+      "required": ["email"]
+    }
+  },
+  "firestore": {
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Collection of drink categories."
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Collection of specific drinks."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of customer orders."
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Collection of admin users."
+    }
+  }
+}
